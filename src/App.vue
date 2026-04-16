@@ -1,9 +1,3 @@
-<script setup>
-import { RouterView } from 'vue-router';
-import NavBar from './components/NavBar.vue'
-import FooterBar from './components/FooterBar.vue';
-</script>
-
 <template>
   <NavBar />
   <main class="main-content">
@@ -11,6 +5,15 @@ import FooterBar from './components/FooterBar.vue';
   </main>
   <FooterBar />
 </template>
+
+<script setup>
+import { RouterView } from 'vue-router';
+import NavBar from './components/NavBar.vue'
+import FooterBar from './components/FooterBar.vue';
+import { useAuthStore } from '@/stores/auth';
+const authStore = useAuthStore();
+authStore.loadFromStorage();
+</script>
 
 <style scoped>
 .main-content {

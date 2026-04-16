@@ -76,8 +76,8 @@
 
         <p class="text-center text-sm mt-3 text-base-content/70" v-if="role === 'READER'">
           Chưa có tài khoản?
-          <RouterLink to="/register" class="link link-primary font-bold hover:text-primary-focus transition-colors">Tạo
-            ngay</RouterLink>
+          <RouterLink to="/register" class="link link-primary font-bold hover:text-primary-focus transition-colors">Đăng
+            ký</RouterLink>
         </p>
       </div>
     </div>
@@ -111,14 +111,14 @@ const handleLogin = async () => {
       password: password.value,
     })
 
-    localStorage.setItem('token', response.data.token)
-    localStorage.setItem('user', JSON.stringify(response.data.user))
+    // localStorage.setItem('token', response.data.data.token)
+    // localStorage.setItem('user', JSON.stringify(response.data.data.user))
+    // // authStore.token = response.data.data.token
+    // // authStore.user = response.data.data.user
 
-    if (role.value === 'ADMIN') {
-      router.push('/admin/dashboard')
-    } else {
-      router.push('/')
-    }
+    authStore.setAuth(response.data.data)
+
+    router.push('/')
 
   } catch (error) {
     console.error('Lỗi đăng nhập:', error)
@@ -130,31 +130,44 @@ const handleLogin = async () => {
 }
 
 const handleGoogleCallback = async (response) => {
-  isLoading.value = true
-  errorMessage.value = ''
-  const token = response
-  console.log('Token Google nhận được:', token)
+  isLoading.value = true;
 
-  if (!token) {
-    errorMessage.value = 'Không lấy được token từ Google.'
-    isLoading.value = false
-    return // Dừng lại nếu token undefined
-  }
+  // Kiểm tra xem nó có phải là Object chứa credential không
+  // console.log("Full Response:", response);
+
+  // Đây là nơi chứa id_token chuẩn cho hàm verifyIdToken ở Backend
+  // const idToken = response.credential;
+
+  // console.log("Credential received:", idToken);
+
+  // if (!idToken) {
+  //   console.error("Vẫn không lấy được credential. Google trả về:", response);
+  //   errorMessage.value = "Lỗi: Google không trả về ID Token. Hãy thử xóa cache trình duyệt.";
+  //   isLoading.value = false;
+  //   return;
+  // }
+
+  // console.log("ID Token nhận được (ey...):", idToken);
+
   try {
     const res = await api.post('/auth/login/google', {
-      googleToken: token,
-    })
-    console.log('Dữ liệu từ Google: ' + JSON.stringify(res.data.googleToken))
-    localStorage.setItem('token', res.data.token)
-    localStorage.setItem('user', JSON.stringify(res.data.user || { role: 'READER' }))
+      googleToken: response.code, // Gửi chuỗi JWT lên Backend
+    });
 
-    // Chuyển hướng về trang chủ
-    router.push('/')
+    const result = res.data.data; // Lấy từ hộp 'data' theo controller của bạn
+
+    if (result && result.token) {
+      localStorage.setItem('token', result.token);
+      localStorage.setItem('user', JSON.stringify(result.user));
+      authStore.token = result.token;
+      authStore.user = result.user;
+      router.push('/');
+    }
   } catch (error) {
-    console.error('Lỗi Google Auth:', error)
-    errorMessage.value = 'Xác thực Google thất bại. Vui lòng thử lại.'
+    errorMessage.value = error.response?.data?.message || 'Xác thực Google thất bại.';
   } finally {
-    isLoading.value = false
+    isLoading.value = false;
   }
-}
+};
+
 </script>
