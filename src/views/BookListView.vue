@@ -77,7 +77,7 @@
 
                             <button @click="openBorrowModal(book)"
                                 class="btn bg-secondary text-secondary-content rounded-lg px-4"
-                                :disabled="authStore.user && authStore.user.role === 'READER' ? book.soQuyen <= 0 : true">
+                                :disabled="book.soQuyen <= 0">
                                 Mượn ngay
                             </button>
                         </div>

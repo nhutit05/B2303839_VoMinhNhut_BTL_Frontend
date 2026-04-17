@@ -10,43 +10,46 @@
                     <RouterLink to="/">Trang chủ</RouterLink>
                 </li>
 
-                <li>
+                <li v-if="authStore.user && authStore.user.role === 'ADMIN'">
+                    <RouterLink to="/categories">Quản lý danh mục</RouterLink>
+                </li>
+                <li v-else>
                     <RouterLink to="/books">Danh mục sách</RouterLink>
                 </li>
 
-                <li v-if="authStore.user && authStore.user.role === 'READER'">
-                    <RouterLink to="/history">Lịch sử mượn sách</RouterLink>
+                <li v-if="authStore.user && authStore.user.role === 'ADMIN'">
+                    <RouterLink to="/borrowings/manage">Quản lý Mượn Trả</RouterLink>
                 </li>
 
-                <div class="dropdown dropdown-end">
+
+
+                <li v-if="!authStore.isLoggedIn">
+                    <RouterLink to="/login">Đăng nhập</RouterLink>
+                </li>
+
+                <div class="dropdown dropdown-end" v-else>
                     <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
-                        <div class="w-10 rounded-full">
+                        <div class="w-10 rounded-full bg-base-200 flex items-center justify-center text-base-content">
                             <img alt="avatar"
                                 src="https://i.pinimg.com/236x/e9/e0/7d/e9e07de22e3ef161bf92d1bcf241e4d0.jpg" />
                         </div>
                     </div>
 
+
+
                     <ul tabindex="-1"
                         class="menu menu-sm dropdown-content bg-base-100 rounded-box z-50 mt-3 w-fit p-2 shadow ">
 
                         <li>
-                            <RouterLink to="/profile" class="justify-between">
-                                Profile
-                                <span class="badge ml-7">New</span>
+                            <RouterLink to="/profile" class="flex items-center justify-between whitespace-nowrap">
+                                <span class="whitespace-nowrap">Thông tin cá nhân</span>
                             </RouterLink>
                         </li>
 
-                        <!-- <li>
-                            <RouterLink to="/" @click="logout">
-                                Logout
-                            </RouterLink>
-                        </li> -->
                         <li v-if="authStore.isLoggedIn">
-                            <RouterLink to="/" @click.prevent="logout">Logout</RouterLink>
+                            <RouterLink to="/" @click.prevent="logout">Đăng xuất</RouterLink>
                         </li>
-                        <li v-else>
-                            <RouterLink to="/login">Login</RouterLink>
-                        </li>
+
 
                     </ul>
                 </div>

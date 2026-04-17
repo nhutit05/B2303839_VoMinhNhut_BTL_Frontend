@@ -190,7 +190,6 @@
                                                 class="label-text font-semibold text-base-content/70">Địa chỉ liên
                                                 hệ</span></label>
                                         <input type="text" v-model="formData.diaChi" :disabled="!isEditing"
-                                            placeholder="Chưa cập nhật"
                                             class="input input-bordered w-full focus:input-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all" />
                                     </div>
                                 </div>
