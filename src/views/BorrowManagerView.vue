@@ -70,8 +70,9 @@
                             <th class="py-5 font-bold text-center">Hạn Trả</th>
                             <th class="py-5 font-bold text-center">Đã Nhận Sách</th>
                             <th class="py-5 font-bold text-center">Trạng Thái</th>
-                            <th class="py-5 font-bold text-right">Tiền Phạt</th>
-                            <th class="py-5 pr-6 font-bold text-right">Thao tác</th>
+                            <th class="py-5 font-bold text-center">Tiền Phạt</th>
+                            <th class="py-5 pr-6 font-bold text-center">Thao tác</th>
+                           
                         </tr>
                     </thead>
                     <tbody>
@@ -126,7 +127,7 @@
                                     </button>
 
                                     <!-- Trả sách -->
-                                    <button v-if="record.trangThai !== 'Đã trả'" @click="openReturnModal(record)"
+                                    <button v-if="record.trangThai !== 'Đã trả' && record.trangThaiNhan === 'Đã nhận'" @click="openReturnModal(record)"
                                         class="btn btn-circle btn-primary btn-sm" title="Trả sách">
                                         <!-- return/refresh icon -->
                                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
@@ -138,6 +139,7 @@
 
                                 </div>
                             </td>
+                            
                         </tr>
 
                         <tr v-if="filteredRecords.length === 0">
@@ -338,6 +340,26 @@ const getStatusBadgeClass = (status) => {
         case 'Đã trả': return 'badge-success badge-outline';
         case 'Quá hạn': return 'badge-error text-white border-none';
         default: return 'badge-ghost';
+    }
+};
+
+const currentExtendingId = ref(null); // để hiển thị loading riêng cho từng nút
+
+const extendBorrow = async (record) => {
+    isSaving.value = true;
+    currentExtendingId.value = record._id;
+    try {
+        await api.patch(`/borrow/${record._id}/extend`);
+        showToast('Gia hạn mượn sách thành công (+7 ngày)!', 'success');
+        fetchBorrowRecords(); // reload danh sách
+    } catch (error) {
+        showToast(
+            error.response?.data?.message || 'Lỗi khi gia hạn mượn sách.',
+            'error'
+        );
+    } finally {
+        isSaving.value = false;
+        currentExtendingId.value = null;
     }
 };
 

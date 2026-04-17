@@ -8,9 +8,9 @@
 
             <div class="join w-full max-w-md shadow-sm">
                 <input v-model="searchQuery"
-                    class="input input-bordered join-item w-full focus:outline-none focus:border-primary"
+                    class="input px-2 input-bordered w-full focus:outline-none focus:border-primary"
                     placeholder="Tìm kiếm theo tên sách, tác giả..." />
-                <button class="btn btn-primary join-item">
+                <button class="btn btn-primary">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
                         stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

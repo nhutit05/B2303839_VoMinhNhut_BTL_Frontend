@@ -17,17 +17,29 @@
                     <RouterLink to="/books">Danh mục sách</RouterLink>
                 </li>
 
+                <li>
+                    <RouterLink to="/policies">Chính sách thư viện</RouterLink>
+                </li>
+
                 <li v-if="authStore.user && authStore.user.role === 'ADMIN'">
                     <RouterLink to="/borrowings/manage">Quản lý Mượn Trả</RouterLink>
                 </li>
 
+                <li v-if="authStore.user && authStore.user.role === 'ADMIN'">
+                    <RouterLink to="/admin/dashboard">Thống kê</RouterLink>
+                </li>
+
+
+                <li v-if="authStore.user && authStore.user.role === 'READER'">
+                    <RouterLink to="/history">Lịch sử mượn sách</RouterLink>
+                </li>
 
 
                 <li v-if="!authStore.isLoggedIn">
                     <RouterLink to="/login">Đăng nhập</RouterLink>
                 </li>
 
-                <div class="dropdown dropdown-end" v-else>
+                <div class="dropdown dropdown-end ml-5" v-else>
                     <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                         <div class="w-10 rounded-full bg-base-200 flex items-center justify-center text-base-content">
                             <img alt="avatar"
@@ -49,7 +61,6 @@
                         <li v-if="authStore.isLoggedIn">
                             <RouterLink to="/" @click.prevent="logout">Đăng xuất</RouterLink>
                         </li>
-
 
                     </ul>
                 </div>

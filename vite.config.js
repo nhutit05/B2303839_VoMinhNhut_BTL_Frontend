@@ -15,4 +15,9 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
+  build: {
+    outDir: '../backend/public', // Build thẳng vào public của backend
+    emptyOutDir: true,           // Tự động xóa file cũ khi build
+  }
 })
+

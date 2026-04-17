@@ -50,7 +50,7 @@
                         <tr v-for="publisher in filterPublisher" :key="publisher._id"
                             class="hover:bg-base-200/50 border-b border-base-200 transition-colors">
                             <td class="pl-6 py-4">
-                                <div class="font-bold text-lg text-base-content">{{ publisher.tenNXB }}</div>
+                                <div class="font-bold text-md text-base-content">{{ publisher.tenNXB }}</div>
                             </td>
                             <td class="text-center py-4">
                                 <div class="badge badge-primary badge-outline font-semibold">

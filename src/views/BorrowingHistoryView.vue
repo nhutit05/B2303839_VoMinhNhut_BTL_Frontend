@@ -20,7 +20,7 @@
                     <div class="form-control w-full md:flex-1">
                         <label class="label pt-0"><span class="label-text font-medium">Trạng thái phiếu</span></label>
                         <select v-model="filterStatus"
-                            class="select select-bordered w-full bg-base-100 focus:select-primary transition-colors">
+                            class="select px-2 mt-2 select-bordered w-full bg-base-100 focus:select-primary transition-colors">
                             <option value="Tất cả">Tất cả trạng thái</option>
                             <option value="Đang mượn">Đang mượn</option>
                             <option value="Đã trả">Đã trả</option>
@@ -31,13 +31,13 @@
                     <div class="form-control w-full md:flex-1">
                         <label class="label pt-0"><span class="label-text font-medium">Mượn từ ngày</span></label>
                         <input type="date" v-model="startDate"
-                            class="input input-bordered w-full bg-base-100 focus:input-primary transition-colors" />
+                            class="input mt-2 px-2 input-bordered w-full bg-base-100 focus:input-primary transition-colors" />
                     </div>
 
                     <div class="form-control w-full md:flex-1">
                         <label class="label pt-0"><span class="label-text font-medium">Đến ngày</span></label>
                         <input type="date" v-model="endDate"
-                            class="input input-bordered w-full bg-base-100 focus:input-primary transition-colors" />
+                            class="input mt-2 px-2 input-bordered w-full bg-base-100 focus:input-primary transition-colors" />
                     </div>
 
                     <div class="form-control w-full md:w-auto mt-4 md:mt-0">
@@ -66,6 +66,7 @@
                             <th class="font-bold py-5 text-center">Ngày trả</th>
                             <th class="font-bold py-5 text-center">Trạng thái</th>
                             <th class="font-bold py-5 text-right pr-6">Tiền phạt</th>
+                            <th class="font-bold py-5 text-center">Gia hạn</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -89,6 +90,17 @@
                                 :class="record.tienPhat > 0 ? 'text-error' : 'text-base-content/50'">
                                 {{ record.tienPhat > 0 ? formatCurrency(record.tienPhat) : '0 ₫' }}
                             </td>
+                            <td class="text-center py-4">
+                                <button v-if="!record.daGiaHan && record.trangThai === 'Đang mượn'"
+                                    class="btn btn-sm btn-warning btn-outline btn-circle hover:bg-warning hover:text-white shadow-md transition-all"
+                                    @click="openExtendModal(record)" title="Gia hạn thêm 7 ngày" :disabled="isSaving">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -105,6 +117,40 @@
                     lọc để xem lại.</p>
             </div>
         </div>
+
+        <dialog ref="extendModal" class="modal">
+            <div class="modal-box rounded-2xl border-t-4 border-success">
+                <h3 class="font-bold text-2xl text-success flex items-center gap-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Xác nhận gia hạn sách
+                </h3>
+                <p class="py-5 text-lg">
+                    Xác nhận độc giả <span class="font-bold text-primary">{{ recordToExtend?.maDocGia?.hoLot }} {{
+                        recordToExtend?.maDocGia?.ten }}</span>
+                    gia hạn cuốn <span class="font-bold text-primary">"{{ recordToExtend?.maSach?.tenSach }}"</span> thêm 7 ngày?
+                </p>
+                <div class="modal-action">
+                    <button class="btn btn-ghost rounded-xl" @click="closeModal">Hủy</button>
+                    <button type="button" class="btn btn-success bg-success text-white px-5 rounded-xl shadow-md"
+                        @click="confirmExtendBook" :disabled="isSaving">
+                        <span v-if="isSaving" class="loading loading-spinner"></span>
+                        Gia hạn
+                    </button>
+                </div>
+            </div>
+        </dialog>
+
+        
+        <div v-if="toast.show" class="toast toast-end toast-bottom z-50">
+            <div
+                :class="['alert text-white shadow-xl font-medium rounded-xl', toast.type === 'success' ? 'alert-success' : 'alert-error']">
+                <span>{{ toast.msg }}</span>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -114,6 +160,7 @@ import api from '@/services/api';
 
 const isLoading = ref(true);
 const historyData = ref([]);
+const isSaving = ref(false);
 
 // --- BIẾN TRẠNG THÁI BỘ LỌC ---
 // Đã khớp với Enum của Backend: "Đang mượn", "Đã trả", "Quá hạn"
@@ -125,6 +172,7 @@ const endDate = ref('');
 const isFiltering = computed(() => {
     return filterStatus.value !== 'Tất cả' || startDate.value !== '' || endDate.value !== '';
 });
+const toast = ref({ show: false, msg: '', type: '' });
 
 // --- LẤY DỮ LIỆU TỪ BACKEND ---
 const fetchHistory = async () => {
@@ -147,6 +195,7 @@ const fetchHistory = async () => {
         isLoading.value = false;
     }
 };
+
 
 // --- LOGIC LỌC VÀ SẮP XẾP ---
 const filteredHistory = computed(() => {
@@ -179,9 +228,14 @@ const clearFilters = () => {
     startDate.value = '';
     endDate.value = '';
 };
-
+const recordToExtend = ref(null);
 // --- CÁC HÀM TIỆN ÍCH (HELPERS) ---
+// const openExtendModal = (record) => {
+//     recordToExtend.value = record;
+//     document.getElementById('extend_confirm_modal').showModal();
+// };
 
+// const closeModal = (modalId) => document.getElementById(modalId).close();
 // Format ngày tháng (VD: 15/04/2024)
 const formatDate = (isoString) => {
     if (!isoString) return '';
@@ -204,6 +258,34 @@ const getStatusClass = (status) => {
     return map[status] || 'badge-ghost';
 };
 
+//const currentExtendingId = ref(null); // để spinner chỉ hiển thị cho nút đang click
+
+const confirmExtendBook = async () => {
+    isSaving.value = true;
+    try {
+        // Cập nhật trạng thái thành "Đã nhận" thông qua API
+        await api.patch(`/borrowings/${recordToExtend.value._id}/extend`);
+        showToast('Đã xác nhận gia hạn sách thành công!', 'success');
+        closeModal('extend_confirm_modal');
+        await fetchHistory(); // Tải lại danh sách
+    } catch (error) {
+        showToast(error.response?.data?.message || 'Lỗi khi cập nhật trạng thái gia hạn sách.', 'error');
+    } finally {
+        isSaving.value = false;
+    }
+};
+
+const extendModal = ref(null);
+const openExtendModal = (record) => {
+    recordToExtend.value = record;
+    extendModal.value.showModal();
+};
+const closeModal = () => extendModal.value.close();
+
+const showToast = (msg, type) => {
+    toast.value = { show: true, msg, type };
+    setTimeout(() => toast.value.show = false, 3000);
+};
 onMounted(() => {
     fetchHistory();
 });

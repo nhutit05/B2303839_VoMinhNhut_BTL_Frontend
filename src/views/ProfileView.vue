@@ -28,14 +28,6 @@
                 <div class="lg:col-span-1">
                     <div class="card bg-base-100 shadow-xl border border-base-200 top-4 sticky">
                         <div class="card-body items-center text-center p-8">
-                            <!-- <div class="avatar placeholder mb-4">
-                                <div
-                                    class="bg-gradient-to-tr from-primary to-secondary text-white rounded-full w-28 ring-4 ring-primary/20 ring-offset-base-100 ring-offset-2 shadow-lg">
-                                    <span class="text-4xl font-bold uppercase content-center">{{
-                                        getInitialLetter()
-                                    }}</span>
-                                </div>
-                            </div> -->
                             <div class="avatar placeholder mb-4">
                                 <div
                                     class="bg-gradient-to-tr from-primary to-secondary text-white rounded-full w-28 h-28 flex items-center justify-center ring-4 ring-primary/20 ring-offset-base-100 ring-offset-2 shadow-lg">
@@ -96,13 +88,13 @@
                                                 class="label-text font-semibold text-base-content/70">Họ
                                                 lót</span></label>
                                         <input type="text" v-model="formData.hoLot" :disabled="!isEditing" required
-                                            class="input input-bordered w-full focus:input-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all" />
+                                            class="input mt-2 px-2 input-bordered w-full focus:input-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all" />
                                     </div>
                                     <div class="form-control">
                                         <label class="label"><span
                                                 class="label-text font-semibold text-base-content/70">Tên</span></label>
                                         <input type="text" v-model="formData.ten" :disabled="!isEditing" required
-                                            class="input input-bordered w-full focus:input-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all" />
+                                            class="input mt-2 px-2 input-bordered w-full focus:input-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all" />
                                     </div>
 
                                     <div class="form-control">
@@ -110,7 +102,7 @@
                                                 class="label-text font-semibold text-base-content/70">Giới
                                                 tính</span></label>
                                         <select v-model="formData.phai" :disabled="!isEditing"
-                                            class="select select-bordered w-full focus:select-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all disabled:opacity-100 appearance-none">
+                                            class="select select-bordered w-full mt-2 focus:select-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all disabled:opacity-100 appearance-none px-2">
                                             <option value="Nam">Nam</option>
                                             <option value="Nữ">Nữ</option>
                                             <option value="Khác">Khác</option>
@@ -121,7 +113,7 @@
                                                 class="label-text font-semibold text-base-content/70">Ngày
                                                 sinh</span></label>
                                         <input type="date" v-model="formData.ngaySinh" :disabled="!isEditing"
-                                            class="input input-bordered w-full focus:input-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all" />
+                                            class="input mt-2 px-2 input-bordered w-full focus:input-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all" />
                                     </div>
 
                                     <div class="form-control">
@@ -130,14 +122,14 @@
                                                 thoại</span></label>
                                         <input type="tel" v-model="formData.dienThoai" :disabled="!isEditing"
                                             placeholder="Chưa cập nhật"
-                                            class="input input-bordered w-full focus:input-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all" />
+                                            class="input mt-2 px-2 input-bordered w-full focus:input-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all" />
                                     </div>
                                     <div class="form-control">
                                         <label class="label"><span
                                                 class="label-text font-semibold text-base-content/70">Email (Cố
                                                 định)</span></label>
                                         <input type="email" :value="formData.email" disabled
-                                            class="input bg-base-200 text-base-content/50 border-transparent cursor-not-allowed w-full" />
+                                            class="input mt-2 px-2 bg-base-200 text-base-content/50 border-transparent cursor-not-allowed w-full" />
                                     </div>
 
                                     <div class="form-control md:col-span-2">
@@ -146,8 +138,15 @@
                                                 tại</span></label>
                                         <input type="text" v-model="formData.diaChi" :disabled="!isEditing"
                                             placeholder="Chưa cập nhật"
-                                            class="input input-bordered w-full focus:input-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all" />
+                                            class="input mt-2 px-2  input-bordered w-full focus:input-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all" />
                                     </div>
+                                     <div class="form-control">
+                                        <label class="label"><span
+                                                class="label-text font-semibold text-base-content/70">Mật khẩu</span></label>
+                                        <input type="text" v-model="formData.password" :disabled="!isEditing"
+                                            class="input mt-2 px-2 input-bordered w-full focus:input-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all" />
+                                    </div>
+
                                 </div>
 
                                 <div v-else-if="role === 'ADMIN'"
@@ -157,7 +156,7 @@
                                                 class="label-text font-semibold text-base-content/70">Họ tên Nhân
                                                 viên</span></label>
                                         <input type="text" v-model="formData.hoTenNV" :disabled="!isEditing" required
-                                            class="input input-bordered w-full focus:input-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all" />
+                                            class="input px-2 input-bordered mt-2 w-full focus:input-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all" />
                                     </div>
 
                                     <div class="form-control">
@@ -166,7 +165,7 @@
                                                 vụ</span></label>
                                         <input type="text" v-model="formData.chucVu" :disabled="!isEditing"
                                             placeholder="Chưa cập nhật"
-                                            class="input input-bordered w-full focus:input-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all" />
+                                            class="input px-2 mt-2 input-bordered w-full focus:input-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all" />
                                     </div>
                                     <div class="form-control">
                                         <label class="label"><span
@@ -174,7 +173,7 @@
                                                 thoại</span></label>
                                         <input type="tel" v-model="formData.soDienThoai" :disabled="!isEditing"
                                             placeholder="Chưa cập nhật"
-                                            class="input input-bordered w-full focus:input-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all" />
+                                            class="input px-2 mt-2 input-bordered w-full focus:input-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all" />
                                     </div>
 
                                     <div class="form-control md:col-span-2">
@@ -182,7 +181,7 @@
                                                 class="label-text font-semibold text-base-content/70">Email (Cố
                                                 định)</span></label>
                                         <input type="email" :value="formData.email" disabled
-                                            class="input bg-base-200 text-base-content/50 border-transparent cursor-not-allowed w-full" />
+                                            class="input px-2 mt-2 bg-base-200 text-base-content/50 border-transparent cursor-not-allowed w-full" />
                                     </div>
 
                                     <div class="form-control md:col-span-2">
@@ -190,7 +189,7 @@
                                                 class="label-text font-semibold text-base-content/70">Địa chỉ liên
                                                 hệ</span></label>
                                         <input type="text" v-model="formData.diaChi" :disabled="!isEditing"
-                                            class="input input-bordered w-full focus:input-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all" />
+                                            class="input px-2 mt-2 input-bordered w-full focus:input-primary disabled:bg-base-200/50 disabled:text-base-content disabled:border-transparent transition-all" />
                                     </div>
                                 </div>
 

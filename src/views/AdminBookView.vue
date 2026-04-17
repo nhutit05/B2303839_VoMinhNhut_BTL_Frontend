@@ -56,7 +56,7 @@
                                 <div class="text-sm text-base-content/60 font-medium">{{ book.tacGia }}</div>
                             </td>
                             <td class="text-center py-4">
-                                <div class="badge badge-primary badge-outline font-semibold">
+                                <div class="badge badge-primary badge-outline font-bold">
                                     {{ book.maNXB?.tenNXB || 'Chưa xác định' }}
                                 </div>
                             </td>
@@ -137,20 +137,20 @@
                             <div>
                                 <label class="label pb-1"><span class="label-text font-semibold">Năm XB</span></label>
                                 <input type="number" v-model="formData.namXuatBan"
-                                    class="input p-2 bg-gray-100 rounded-lg w-full" />
+                                    class="input p-2 no-spinner bg-gray-100 rounded-lg w-full" />
                             </div>
                             <div>
                                 <label class="label pb-1"><span class="label-text font-semibold text-primary">Số lượng
                                         <span class="text-error">*</span></span></label>
                                 <input type="number" min="0" v-model="formData.soQuyen"
-                                    class="input p-2 bg-gray-100 rounded-lg border-primary w-full font-bold text-primary"
+                                    class="input p-2 no-spinner bg-gray-100 rounded-lg border-primary w-full font-bold text-primary"
                                     required />
                             </div>
                             <div>
                                 <label class="label pb-1"><span class="label-text font-semibold text-success">Đơn giá
                                         (VNĐ) <span class="text-error">*</span></span></label>
                                 <input type="number" min="0" v-model="formData.donGia"
-                                    class="input p-2 bg-gray-100 rounded-lg border-success w-full font-bold text-success"
+                                    class="input p-2 bg-gray-100 rounded-lg border-success w-full font-bold text-success no-spinner"
                                     required />
                             </div>
                         </div>
@@ -309,3 +309,15 @@ onMounted(() => {
     fetchPublishers(); // Phải gọi hàm này để có data cho select box
 });
 </script>
+
+<style>
+/* Ẩn mũi tên tăng giảm trên input số */
+input[type=number].no-spinner::-webkit-inner-spin-button,
+input[type=number].no-spinner::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number].no-spinner {
+  -moz-appearance: textfield;
+}
+</style>

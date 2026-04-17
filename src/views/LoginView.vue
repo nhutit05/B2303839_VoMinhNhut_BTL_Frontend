@@ -19,7 +19,7 @@
               Email
             </label>
             <input type="email" v-model="email" placeholder="ten@example.com"
-              class="input input-bordered w-full focus:input-primary bg-base-100 p-2" required />
+              class="input mt-2 input-bordered w-full focus:input-primary bg-base-100 px-2" required />
           </div>
 
           <div class="flex flex-col gap-2 mb-6">
@@ -27,12 +27,13 @@
               Mật khẩu
             </label>
             <input type="password" v-model="password" placeholder="••••••••"
-              class="input input-bordered w-full focus:input-primary bg-base-100 p-2" required />
+              class="input mt-2 input-bordered w-full focus:input-primary bg-base-100 px-2" required />
 
-            <div class="flex justify-end mt-1" v-if="role === 'READER'">
+            <div class="flex justify-end gap-4 mt-1" v-if="role === 'READER'">
               <RouterLink to="/forgot-password" class="text-sm font-medium text-primary hover:underline">
                 Quên mật khẩu?
               </RouterLink>
+            
             </div>
           </div>
 

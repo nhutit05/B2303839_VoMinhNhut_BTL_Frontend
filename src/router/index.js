@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+// import { P } from 'vue-router/dist/index-BzEKChPW.js'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -61,6 +62,23 @@ const router = createRouter({
       component: () => import('../views/AdminCategoryView.vue'),
       meta: { requiresAuth: true, role: 'ADMIN' },
     },
+    {
+      path: '/policies',
+      name: 'policies',
+      component: () => import('../views/LibraryPolicies.vue'),
+    },
+    {
+      path: '/forgot-password',
+      name: 'forgot-password',
+      component: () => import("../views/ForgotPasswordView.vue"),
+      meta: {requiresGuest: true, },
+    },
+    {
+      path: '/admin/dashboard',
+      name: 'admin-dashboard',
+      component: () => import("../views/AdminDashboard.vue"),
+      meta: {requiresAuth: true, role: 'ADMIN'}
+    }
   ],
 })
 
