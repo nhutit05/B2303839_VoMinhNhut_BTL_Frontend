@@ -27,7 +27,7 @@
                 <div v-for="book in filteredBooks" :key="book._id"
                     class="card bg-base-100 shadow-xl hover:shadow-2xl transition-all border border-base-200 group">
 
-                    <figure class="px-4 pt-4 relative">
+                    <!-- <figure class="px-4 pt-4 relative">
                         <div
                             class="w-full h-64 bg-base-200 rounded-xl flex items-center justify-center overflow-hidden">
                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +42,33 @@
                             class="absolute inset-0 bg-base-300/60 flex items-center justify-center rounded-xl m-4">
                             <span class="badge badge-error p-4 font-bold text-white shadow">TẠM HẾT</span>
                         </div>
-                    </figure>
+                    </figure> -->
+                    <figure class="px-4 pt-4 relative">
+  <div class="w-full h-64 bg-base-200 rounded-xl overflow-hidden">
+    
+    <!-- <img
+  :src="book.image"
+  loading="lazy"
+  class="w-full h-full object-cover transition duration-300 blur-sm"
+/> -->
+
+<img
+  :src="book.image"
+  loading="lazy"
+  class="w-full h-full object-cover transition duration-300"
+/>
+  </div>
+
+  <!-- Overlay hết sách -->
+  <div
+    v-if="book.soQuyen <= 0"
+    class="absolute inset-0 bg-base-300/60 flex items-center justify-center rounded-xl m-4"
+  >
+    <span class="badge badge-error p-4 font-bold text-white shadow">
+      TẠM HẾT
+    </span>
+  </div>
+</figure>
 
                     <div class="card-body p-5">
                         <h2 class="card-title text-lg leading-tight mb-1">{{ book.tenSach }}</h2>

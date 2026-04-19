@@ -102,7 +102,7 @@
                     </h3>
                 </div>
 
-                <form @submit.prevent="saveBook" class="p-8 space-y-5">
+                <!-- <form @submit.prevent="saveBook" class="p-8 space-y-5">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
 
                         <div class="form-control md:col-span-2">
@@ -166,6 +166,111 @@
                             Xác nhận
                         </button>
                     </div>
+                </form> -->
+                <form @submit.prevent="saveBook" class="p-8 space-y-5">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+
+                        <!-- TÊN SÁCH -->
+                        <div class="form-control md:col-span-2">
+                            <label class="label pb-1">
+                                <span class="label-text font-semibold">
+                                    Tên sách <span class="text-error">*</span>
+                                </span>
+                            </label>
+                            <input type="text" v-model="formData.tenSach" placeholder="Nhập tên sách..."
+                                class="input p-2 bg-gray-100 rounded-lg w-full" required />
+                        </div>
+
+                        <!-- TÁC GIẢ -->
+                        <div class="form-control">
+                            <label class="label pb-1">
+                                <span class="label-text font-semibold">
+                                    Tác giả <span class="text-error">*</span>
+                                </span>
+                            </label>
+                            <input type="text" v-model="formData.tacGia" placeholder="Tên tác giả..."
+                                class="input p-2 bg-gray-100 rounded-lg w-full" required />
+                        </div>
+
+                        <!-- ✅ LINK ẢNH (THAY FILE INPUT) -->
+                        <div class="form-control">
+                            <label class="label pb-1">
+                                <span class="label-text font-semibold">Link ảnh bìa</span>
+                            </label>
+
+                            <input type="text" v-model="formData.image" placeholder="Dán link ảnh (https://...)"
+                                class="input p-2 bg-gray-100 rounded-lg w-full" />
+
+                            <!-- Preview -->
+                            <!-- <div v-if="formData.image" class="mt-3">
+                                <img :src="formData.image" @error="e => e.target.src = '/default-book.png'"
+                                    class="w-24 h-32 object-cover rounded-lg border shadow" />
+                            </div> -->
+                        </div>
+
+                        <!-- NXB -->
+                        <div class="form-control md:col-span-2">
+                            <label class="label pb-1">
+                                <span class="label-text font-semibold">
+                                    Nhà xuất bản <span class="text-error">*</span>
+                                </span>
+                            </label>
+                            <select v-model="formData.maNXB" class="select select-bordered rounded-lg w-full p-2"
+                                required>
+                                <option value="" disabled>Chọn một nhà xuất bản</option>
+                                <option v-for="nxb in publishers" :key="nxb._id" :value="nxb._id">
+                                    {{ nxb.tenNXB }}
+                                </option>
+                            </select>
+                        </div>
+
+                        <!-- THÔNG TIN KHÁC -->
+                        <div class="form-control md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div>
+                                <label class="label pb-1">
+                                    <span class="label-text font-semibold">Năm XB</span>
+                                </label>
+                                <input type="number" v-model="formData.namXuatBan"
+                                    class="input no-spinner p-2 bg-gray-100 rounded-lg w-full" />
+                            </div>
+
+                            <div>
+                                <label class="label pb-1">
+                                    <span class="label-text font-semibold text-primary">
+                                        Số lượng <span class="text-error">*</span>
+                                    </span>
+                                </label>
+                                <input type="number" min="0" v-model="formData.soQuyen"
+                                    class="input no-spinner p-2 bg-gray-100 rounded-lg border-primary w-full font-bold text-primary"
+                                    required />
+                            </div>
+
+                            <div>
+                                <label class="label pb-1">
+                                    <span class="label-text font-semibold text-success">
+                                        Đơn giá (VNĐ) <span class="text-error">*</span>
+                                    </span>
+                                </label>
+                                <input type="number" min="0" v-model="formData.donGia"
+                                    class="input no-spinner p-2 bg-gray-100 rounded-lg border-success w-full font-bold text-success"
+                                    required />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ACTION -->
+                    <div class="modal-action mt-8 border-t border-base-200 pt-6">
+                        <button type="button" class="btn btn-ghost rounded-xl px-6"
+                            @click="closeModal('book_form_modal')">
+                            Hủy bỏ
+                        </button>
+
+                        <button type="submit" class="btn btn-primary bg-accent rounded-xl px-7 font-bold shadow-md"
+                            :disabled="isSaving">
+                            <span v-if="isSaving" class="loading loading-spinner"></span>
+                            Xác nhận
+                        </button>
+                    </div>
                 </form>
             </div>
         </dialog>
@@ -209,7 +314,7 @@ const bookToDelete = ref(null);
 const toast = ref({ show: false, msg: '', type: '' });
 
 // Cập nhật maNXB thay vì nhaXuatBan chuỗi
-const defaultForm = { tenSach: '', tacGia: '', maNXB: '', namXuatBan: '', soQuyen: 1, donGia: 0 };
+const defaultForm = { tenSach: '', tacGia: '', maNXB: '', namXuatBan: '', soQuyen: 1, donGia: 0, image: '' };
 const formData = ref({ ...defaultForm });
 
 // --- LẤY DỮ LIỆU ---
@@ -220,6 +325,16 @@ const fetchPublishers = async () => {
     } catch (err) {
         console.error("Không lấy được danh sách NXB:", err);
     }
+};
+
+const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    // preview local
+    formData.image = URL.createObjectURL(file);
+
+    // nếu muốn upload server/cloud thì xử lý ở đây
 };
 
 const fetchBooks = async () => {
@@ -314,10 +429,11 @@ onMounted(() => {
 /* Ẩn mũi tên tăng giảm trên input số */
 input[type=number].no-spinner::-webkit-inner-spin-button,
 input[type=number].no-spinner::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
+
 input[type=number].no-spinner {
-  -moz-appearance: textfield;
+    -moz-appearance: textfield;
 }
 </style>

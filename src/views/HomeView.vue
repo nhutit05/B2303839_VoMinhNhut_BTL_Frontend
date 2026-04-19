@@ -107,13 +107,9 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
         <div v-for="book in mockFeaturedBooks" :key="book.id"
           class="card bg-base-100 shadow-xl border border-base-200 group overflow-hidden">
-          <figure class="bg-base-200 h-56 relative flex items-center justify-center">
-            <svg xmlns="http://www.w3.org/2000/svg"
-              class="h-16 w-16 text-base-300 group-hover:scale-110 transition-transform duration-300" fill="none"
-              viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
-            </svg>
+          <figure class="bg-base-200 h-56 relative overflow-hidden">
+            <img :src="book.image" :alt="book.title"
+              class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
 
             <div class="absolute top-3 right-3 badge badge-primary badge-sm font-bold shadow-sm">
               {{ book.rating }} ⭐
@@ -153,10 +149,38 @@ const role = computed(() => {
 
 // DỮ LIỆU GIẢ LẬP (MOCK DATA)
 const mockFeaturedBooks = [
-  { id: 1, title: 'Clean Code: Cẩm nang Agile', author: 'Robert C. Martin', category: 'Công nghệ IT', rating: '4.9' },
-  { id: 2, title: 'Sapiens: Lược sử loài người', author: 'Yuval Noah Harari', category: 'Khoa học - Lịch sử', rating: '4.8' },
-  { id: 3, title: 'Đắc Nhân Tâm', author: 'Dale Carnegie', category: 'Tâm lý học', rating: '4.7' },
-  { id: 4, title: 'Bàn Về Nghệ Thuật Sống', author: 'Lâm Ngữ Đường', category: 'Triết học', rating: '4.9' }
+  {
+    id: 1,
+    title: 'Clean Code: Cẩm nang Agile',
+    author: 'Robert C. Martin',
+    category: 'Công nghệ IT',
+    rating: '4.9',
+    image: 'https://images-na.ssl-images-amazon.com/images/I/41xShlnTZTL._SX374_BO1,204,203,200_.jpg'
+  },
+  {
+    id: 2,
+    title: 'Sapiens: Lược sử loài người',
+    author: 'Yuval Noah Harari',
+    category: 'Khoa học - Lịch sử',
+    rating: '4.8',
+    image: 'https://images-na.ssl-images-amazon.com/images/I/713jIoMO3UL.jpg'
+  },
+  {
+    id: 3,
+    title: 'Đắc Nhân Tâm',
+    author: 'Dale Carnegie',
+    category: 'Tâm lý học',
+    rating: '4.7',
+    image: 'https://images-na.ssl-images-amazon.com/images/I/71QKQ9mwV7L.jpg'
+  },
+  {
+    id: 4,
+    title: 'Bàn Về Nghệ Thuật Sống',
+    author: 'Lâm Ngữ Đường',
+    category: 'Triết học',
+    rating: '4.9',
+    image: 'https://images-na.ssl-images-amazon.com/images/I/71tbalAHYCL.jpg'
+  }
 ];
 </script>
 
